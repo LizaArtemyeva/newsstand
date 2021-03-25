@@ -1,0 +1,16 @@
+h2 {
+    font-family: sans-serif;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    color: rgb(49, 151, 116); /* Цвет текста */
+}
+
+strong {
+    font-weight: 700;
+    background-color: yellow;
+}
+
+p {
+    color: rgb(49, 151, 116); /* Цвет текста */
+    font-family: sans-serif;
+}

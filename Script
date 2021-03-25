@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS `newsstand`.`newspapper` (
+`idnewspapper` INT NOT NULL AUTO_INCREMENT,
+`name` VARCHAR(225) NOT NULL,
+`number` INT NOT NULL,
+`date` DATE NOT NULL,
+`status` INT NOT NULL,
+PRIMARY KEY (`idnewspapper`))
+"ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `newsstand`.`magazine` (
+`idmagazine` INT NOT NULL AUTO_INCREMENT,
+`name` VARCHAR(225) NOT NULL,
+`number` INT NOT NULL,
+`date` DATE NOT NULL,
+`numPages` INT NOT NULL,
+`status` INT NOT NULL,
+PRIMARY KEY (`idmagazine`))
+"ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `newsstand`.`book` (
+`idbook` INT NOT NULL AUTO_INCREMENT,
+`name` VARCHAR(225) NOT NULL,
+`author` VARCHAR(225) NOT NULL,
+`publishingHouse` VARCHAR(225) NOT NULL,
+`numPages` INT NOT NULL,
+`status` INT NOT NULL,
+PRIMARY KEY (`idbook`))
+"ENGINE = InnoDB;

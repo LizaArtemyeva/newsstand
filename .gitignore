@@ -1,0 +1,5 @@
+# Project exclude paths
+/target/
+/.idea/
+/apache-tomcat-10.0.4/
+ru.vsu.cs.artemyeva.iml
