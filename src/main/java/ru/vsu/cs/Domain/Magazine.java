@@ -1,18 +1,33 @@
 package ru.vsu.cs.Domain;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import static ru.vsu.cs.Domain.Status.IN_STOCK;
 import static ru.vsu.cs.Domain.Type.MAGAZINE;
+
+@Entity
+@Table(name = "magazine")
 public class Magazine extends Paper {
-    private int number, numPages;
+    @Column(name = "number")
+    private int number;
+    @Column(name = "numPages")
+    private int numPages;
+    @Column(name = "date")
     private String date;
     public Magazine(String name, int number, String date, int numPages) {
         super(name,IN_STOCK);
         this.number = number;
         this.date = date;
         this.numPages = numPages;
+    }
+
+    public Magazine(String name, Status status) {
+        super(name, status);
+    }
+
+    public Magazine() {
     }
 
     public int getNumber() {
@@ -41,7 +56,7 @@ public class Magazine extends Paper {
 
     @Override
     public String toString() {
-        return "Журнал: " + ID + " " + name + " "+ number + " " + date + " " + numPages;
+        return "Журнал: " + id + " " + name + " "+ number + " " + date + " " + numPages;
     }
 
     @Override

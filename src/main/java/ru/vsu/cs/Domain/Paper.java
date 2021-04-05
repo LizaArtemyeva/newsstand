@@ -1,13 +1,24 @@
 package ru.vsu.cs.Domain;
 
+import javax.persistence.*;
+
+@MappedSuperclass
 public abstract class Paper{
-    protected int ID;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected int id;
+    @Column(name = "name")
     protected String name;
+    @Column(name = "status")
     protected Status status;
 
     public Paper(String name, Status status) {
         this.status = status;
         this.name = name;
+    }
+
+    public Paper() {
     }
 
     public Status getStatus() {
@@ -19,11 +30,11 @@ public abstract class Paper{
     }
 
     public int getID() {
-        return ID;
+        return id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(int id) {
+        this.id = id;
     }
 
     public String getName() {

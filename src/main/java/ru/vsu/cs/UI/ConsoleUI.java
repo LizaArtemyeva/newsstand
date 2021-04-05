@@ -4,13 +4,13 @@ import ru.vsu.cs.DAO.IRepository;
 import ru.vsu.cs.Domain.*;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Scanner;
 @Component("operations")
-public class Operations {
+public class ConsoleUI {
 //    private Manager manager;
     private Scanner in = new Scanner(System.in);
-
     private String name, publishingHouse, author,date2, product;
     private int numPages,number;
 
@@ -71,8 +71,35 @@ public class Operations {
            System.out.println(products.get(i));
         }
     }
-    public void whatToEditMessage(){
+    public void whatToEditMessage(Type type){
         System.out.println("Вы можете поменять следующие поля:");
+        if(type.equals(Type.BOOK)){
+            try {
+                Class<Book> book = (Class<Book>) Class.forName("ru.vsu.cs.Domain.Book");
+                Field[] fs = book.getDeclaredFields(); // получили массив с объектами Field, соответствующие полям класса SomeClass
+                for (Field f : fs) System.out.println(f.getName()); // имя поля
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        if(type.equals(Type.MAGAZINE)){
+            try {
+                Class<Magazine> m = (Class<Magazine>) Class.forName("ru.vsu.cs.Domain.Magazine");
+                Field[] fs = m.getDeclaredFields(); // получили массив с объектами Field, соответствующие полям класса SomeClass
+                for (Field f : fs) System.out.println(f.getName()); // имя поля
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        if(type.equals(Type.NEWSPAPER)){
+            try {
+                Class<Newspaper> n = (Class<Newspaper>) Class.forName("ru.vsu.cs.Domain.Newspaper");
+                Field[] fs = n.getDeclaredFields(); // получили массив с объектами Field, соответствующие полям класса SomeClass
+                for (Field f : fs) System.out.println(f.getName()); // имя поля
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
     public String editField(){
         System.out.println("Какое поле вы хотите изменить? -");

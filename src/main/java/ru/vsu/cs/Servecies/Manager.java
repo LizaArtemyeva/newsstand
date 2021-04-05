@@ -1,51 +1,119 @@
 package ru.vsu.cs.Servecies;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.transaction.annotation.Transactional;
 import ru.vsu.cs.DAO.IRepository;
-import ru.vsu.cs.Domain.Paper;
-import ru.vsu.cs.Domain.Type;
-import ru.vsu.cs.UI.Operations;
+import ru.vsu.cs.Domain.*;
+import ru.vsu.cs.UI.ConsoleUI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component("manager")
 public class Manager {
     private IRepository iRepository;
-    private Operations operations;
-
+    private ConsoleUI consoleUI;
+//hibernateRepository
     @Autowired
-    public Manager(IRepository iRepository, Operations operations) {
+    public Manager(@Qualifier("hibernateRepository") IRepository iRepository, ConsoleUI consoleUI) {
         this.iRepository = iRepository;
-        this.operations = operations;
+        this.consoleUI = consoleUI;
     }
-
+    @Transactional
+    public List<Book> getBooks(){
+        return iRepository.getBooks();
+    }
+    @Transactional
+    public List<Magazine> getMagazines() {
+        return iRepository.getMagazines();
+    }
+    @Transactional
+    public List<Newspaper> getNewspapers() {
+        return iRepository.getNewspapers();
+    }
+    @Transactional
+    public List<Paper> getAllProducts(){
+        return iRepository.getAllProducts();
+    }
+    @Transactional
     public void addNewProduct(){
-        Paper paper = operations.addNewProduct();
+        Paper paper = consoleUI.addNewProduct();
         paper.setID(iRepository.addProduct(paper));
     }
+    @Transactional
+    public Paper getPaper(int id){
+        return iRepository.getPaper(id);
+    }
+    @Transactional
     public void removeProduct(){
-        int id = operations.getId();
-        Type type = operations.getType();
-        iRepository.removeFromBD(id, type);
+        int id = consoleUI.getId();
+        iRepository.removeFromBD(iRepository.getPaper(id));
     }
+    @Transactional
     public void editProduct(){
-        Type type = operations.getType();
-        int id = operations.getId();
-        operations.whatToEditMessage();
-        for (int i = 0; i < iRepository.showWhatToEdit(type).size(); i++) {
-            System.out.println(iRepository.showWhatToEdit(type).get(i));
+        Type type = consoleUI.getType();
+        int id = consoleUI.getId();
+        consoleUI.whatToEditMessage(type);
+//        for (int i = 0; i < iRepository.showWhatToEdit(type).size(); i++) {
+//            System.out.println(iRepository.showWhatToEdit(type).get(i));
+//        }
+        String whattoedit = consoleUI.editField();
+        String changes = consoleUI.editChanges();
+        if(type==Type.BOOK){
+            Book book = (Book) iRepository.getPaper(id);
+            if(whattoedit.equals("name")){
+                book.setName(changes);
+            }
+            else if(whattoedit.equals("author")){
+                book.setAuthor(changes);
+            }
+            else if(whattoedit.equals("publishingHouse")){
+                book.setPublishingHouse(changes);
+            }
+            else if(whattoedit.equals("numPages")){
+                book.setNumPages(Integer.parseInt(changes));
+            }
+            iRepository.editProductBD(book);
         }
-        String whattoedit = operations.editField();
-        String changes = operations.editChanges();
-        iRepository.editProductBD(id, type,whattoedit,changes);
+        if(type==Type.MAGAZINE){
+            Magazine magazine = (Magazine) iRepository.getPaper(id);
+            if(whattoedit.equals("name")){
+                magazine.setName(changes);
+            }
+            else if(whattoedit.equals("number")){
+                magazine.setNumber(Integer.parseInt(changes));
+            }
+            else if(whattoedit.equals("date")){
+                magazine.setDate(changes);
+            }
+            else if(whattoedit.equals("numPages")){
+                magazine.setNumPages(Integer.parseInt(changes));
+            }
+            iRepository.editProductBD(magazine);
+        }
+        if(type==Type.NEWSPAPER){
+            Newspaper newspaper = (Newspaper) iRepository.getPaper(id);
+            if(whattoedit.equals("name")){
+                newspaper.setName(changes);
+            }
+            else if(whattoedit.equals("number")){
+                newspaper.setNumber(Integer.parseInt(changes));
+            }
+            else if(whattoedit.equals("date")){
+                newspaper.setDate(changes);
+            }
+            iRepository.editProductBD(newspaper);
+        }
 
-        iRepository.editProductBD(id, type, whattoedit, changes);
     }
+    @Transactional
     public void buyProduct(){
-        Type type = operations.getType();
-        int id = operations.getId();
-        iRepository.pickUpProductBD(id, type);
+        int id = consoleUI.getId();
+        iRepository.pickUpProductBD(iRepository.getPaper(id));
     }
+    @Transactional
     public void showProducts(){
-        operations.showProducts(iRepository.getAllProducts());
+        consoleUI.showProducts(iRepository.getAllProducts());
     }
 }

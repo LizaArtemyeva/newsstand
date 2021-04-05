@@ -1,16 +1,17 @@
 package ru.vsu.cs.DAO;
 
-import ru.vsu.cs.Domain.Paper;
-import ru.vsu.cs.Domain.Type;
+import ru.vsu.cs.Domain.*;
 
 import java.util.List;
 
 public interface IRepository {
+    List<Book> getBooks();
+    List<Magazine> getMagazines();
+    List<Newspaper> getNewspapers();
     List<Paper> getAllProducts();
     Paper getPaper(int id);
     int addProduct(Paper paper);
-    void editProductBD(int ID, Type type,String whattoedit,String changes);
-    List<String>  showWhatToEdit(Type type);
-    void removeFromBD(int ID, Type type);
-    void pickUpProductBD(int ID, Type type);
+    void editProductBD(Paper paper);
+    void removeFromBD(Paper paper);
+    void pickUpProductBD(Paper paper);
 }

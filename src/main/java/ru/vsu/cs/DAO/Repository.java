@@ -23,7 +23,7 @@ public class Repository implements IRepository {
     @Value("${database.pass}")
     public String password;
 
-    @PostConstruct
+    //@PostConstruct
     public void init(){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
@@ -32,6 +32,74 @@ public class Repository implements IRepository {
                 | IllegalAccessException | InstantiationException | InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+    public List<Book> getBooks(){
+        List<Book> books = new ArrayList<>();
+        String sqlCommand = "SELECT * FROM book ;";
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sqlCommand);
+            while (rs.next()) {
+                Book book = new Book(
+                        rs.getString("name"),
+                        rs.getString("author"),
+                        rs.getString("publishingHouse"),
+                        rs.getInt("numPages")
+                );
+                book.setID(rs.getInt("id"));
+                books.add(book);
+            }
+        }catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+        return books;
+    }
+    public List<Magazine> getMagazines(){
+        List<Magazine> magazines = new ArrayList<>();
+        String sqlCommand = "SELECT * FROM book ;";
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sqlCommand);
+            sqlCommand = "SELECT * FROM magazine;";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sqlCommand);
+            while (rs.next()) {
+                Magazine magazine = new Magazine(
+                        rs.getString("name"),
+                        rs.getInt("number"),
+                        rs.getString("date"),
+                        rs.getInt("numPages")
+                );
+                magazine.setID(rs.getInt("id"));
+                magazines.add(magazine);
+            }
+        }catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+        return  magazines;
+    }
+    public List<Newspaper> getNewspapers(){
+        List<Newspaper> newspapers = new ArrayList<>();
+        String sqlCommand = "SELECT * FROM book ;";
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sqlCommand);
+            sqlCommand = "SELECT * FROM newspaper;";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sqlCommand);
+            while (rs.next()) {
+                Newspaper newspaper = new Newspaper(
+                        rs.getString("name"),
+                        rs.getInt("number"),
+                        rs.getString("date")
+                );
+                newspaper.setID(rs.getInt("id"));
+                newspapers.add(newspaper);
+            }
+        }catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+        return  newspapers;
     }
     public List<Paper> getAllProducts(){
         List<Paper> products = new ArrayList<>();
@@ -46,7 +114,7 @@ public class Repository implements IRepository {
                         rs.getString("publishingHouse"),
                         rs.getInt("numPages")
                 );
-                book.setID(rs.getInt("idbook"));
+                book.setID(rs.getInt("id"));
                 products.add(book);
             }
             sqlCommand = "SELECT * FROM magazine;";
@@ -59,10 +127,10 @@ public class Repository implements IRepository {
                         rs.getString("date"),
                         rs.getInt("numPages")
                 );
-                magazine.setID(rs.getInt("idmagazine"));
+                magazine.setID(rs.getInt("id"));
                 products.add(magazine);
             }
-            sqlCommand = "SELECT * FROM newspapper;";
+            sqlCommand = "SELECT * FROM newspaper;";
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sqlCommand);
             while (rs.next()) {
@@ -71,7 +139,7 @@ public class Repository implements IRepository {
                         rs.getInt("number"),
                         rs.getString("date")
                 );
-                newspaper.setID(rs.getInt("idnewspapper"));
+                newspaper.setID(rs.getInt("id"));
                 products.add(newspaper);
             }
         }catch (SQLException sqlEx) {
@@ -124,7 +192,7 @@ public class Repository implements IRepository {
             //System.out.println(sqlCommand);
         }
         if (product.getType()== Type.NEWSPAPER){
-            sqlCommand = sqlCommand+" newspapper (name, number, date, status)\n"+
+            sqlCommand = sqlCommand+" newspaper (name, number, date, status)\n"+
                     "VALUES\n" + "(";
             Newspaper n = (Newspaper)product;
             String name = n.getName();
@@ -147,16 +215,37 @@ public class Repository implements IRepository {
 
     }
     //удаляться должно по имени продукта/////по айди?
-    public void removeFromBD(int ID, Type type){
+//    public void removeFromBD(int ID, Type type){
+//        String sqlCommand="DELETE FROM";
+//        if(type == Type.BOOK){
+//            sqlCommand = sqlCommand+" book" + " WHERE id = " + ID;
+//        }
+//        if(type == Type.MAGAZINE){
+//            sqlCommand = sqlCommand+" magazine" + " WHERE id = " + ID;
+//        }
+//        if(type == Type.NEWSPAPER){
+//            sqlCommand = sqlCommand+" newspaper" + " WHERE id = " + ID;
+//        }
+//
+//        try{
+//            Statement stmt = conn.createStatement();
+//            stmt.executeUpdate(sqlCommand);
+//        }
+//        catch(Exception ex){
+//            System.out.println("Connection failed...");
+//            System.out.println(ex);
+//        }
+//    }
+    public void removeFromBD(Paper paper){
         String sqlCommand="DELETE FROM";
-        if(type == Type.BOOK){
-            sqlCommand = sqlCommand+" book" + " WHERE idbook = " + ID;
+        if(paper.getType() == Type.BOOK){
+            sqlCommand = sqlCommand+" book" + " WHERE id = " + paper.getID();
         }
-        if(type == Type.MAGAZINE){
-            sqlCommand = sqlCommand+" magazine" + " WHERE idmagazine = " + ID;
+        if(paper.getType() == Type.MAGAZINE){
+            sqlCommand = sqlCommand+" magazine" + " WHERE id = " + paper.getID();
         }
-        if(type == Type.NEWSPAPER){
-            sqlCommand = sqlCommand+" newspapper" + " WHERE idnewspapper = " + ID;
+        if(paper.getType() == Type.NEWSPAPER){
+            sqlCommand = sqlCommand+" newspaper" + " WHERE id = " + paper.getID();
         }
 
         try{
@@ -168,19 +257,43 @@ public class Repository implements IRepository {
             System.out.println(ex);
         }
     }
-    public void pickUpProductBD(int ID, Type type){
+//    public void pickUpProductBD(int ID, Type type){
+//        String sqlCommand="UPDATE ";
+//        if(type == Type.BOOK){
+//            sqlCommand = sqlCommand+" book "
+//                    + "SET status" + " = " +1 + " WHERE id = "+ID;
+//        }
+//        if(type == Type.MAGAZINE){
+//            sqlCommand = sqlCommand+" magazine "
+//                    + "SET status" + " = " +1 + " WHERE id = "+ID;
+//        }
+//        if(type == Type.NEWSPAPER){
+//            sqlCommand = sqlCommand+" newspaper "
+//                    + "SET status" + " = " +1 + " WHERE id = "+ID;
+//        }
+//        try{
+//            stmt = conn.createStatement();
+//            stmt.executeUpdate(sqlCommand);
+//        }
+//        catch(Exception ex){
+//            System.out.println("Connection failed...");
+//            System.out.println(ex);
+//        }
+//
+//    }
+    public void pickUpProductBD(Paper paper){
         String sqlCommand="UPDATE ";
-        if(type == Type.BOOK){
+        if(paper.getType() == Type.BOOK){
             sqlCommand = sqlCommand+" book "
-                    + "SET status" + " = " +1 + " WHERE idbook = "+ID;
+                    + "SET status" + " = " +1 + " WHERE id = "+paper.getID();
         }
-        if(type == Type.MAGAZINE){
+        if(paper.getType() == Type.MAGAZINE){
             sqlCommand = sqlCommand+" magazine "
-                    + "SET status" + " = " +1 + " WHERE idmagazine = "+ID;
+                    + "SET status" + " = " +1 + " WHERE id = "+paper.getID();
         }
-        if(type == Type.NEWSPAPER){
-            sqlCommand = sqlCommand+" newspapper "
-                    + "SET status" + " = " +1 + " WHERE idnewspapper = "+ID;
+        if(paper.getType() == Type.NEWSPAPER){
+            sqlCommand = sqlCommand+" newspaper "
+                    + "SET status" + " = " +1 + " WHERE id = "+paper.getID();
         }
         try{
             stmt = conn.createStatement();
@@ -190,24 +303,57 @@ public class Repository implements IRepository {
             System.out.println("Connection failed...");
             System.out.println(ex);
         }
-
     }
-    public void editProductBD(int ID, Type type,String whattoedit,String changes){
+   /* public void editProductBD(int ID, Type type,String whattoedit,String changes){
         //UPDATE Clients
         //SET FIO = "Зиновьев Денис Денисович"
         //WHERE idClient = 5;
         String sqlCommand="UPDATE";
         if(type == Type.BOOK){
             sqlCommand = sqlCommand+" book\n"
-                    + "SET " + whattoedit + " = '" +changes + "' WHERE idbook = "+ID;
+                    + "SET " + whattoedit + " = '" +changes + "' WHERE id = "+ID;
         }
         if(type == Type.MAGAZINE){
             sqlCommand = sqlCommand+" magazine\n"
-                    + "SET " + whattoedit + " = '" +changes + "' WHERE idmagazine = "+ID;
+                    + "SET " + whattoedit + " = '" +changes + "' WHERE id = "+ID;
         }
         if(type == Type.NEWSPAPER){
-            sqlCommand = sqlCommand+" newspapper\n"
-                    + "SET " + whattoedit + " = '" +changes + "' WHERE idnewspapper = "+ID;
+            sqlCommand = sqlCommand+" newspaper\n"
+                    + "SET " + whattoedit + " = '" +changes + "' WHERE id = "+ID;
+        }
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sqlCommand);
+        }
+        catch(Exception ex){
+            System.out.println("Connection failed...");
+            System.out.println(ex);
+        }
+    }*/
+    public void editProductBD(Paper paper){
+        String sqlCommand="UPDATE ";
+        if(paper instanceof Book){
+            Book book =(Book) paper;
+            sqlCommand = sqlCommand+" book\n"
+                    +" SET "+ "name = " + "'" + book.getName() + "', "
+                    + "author = " + "'" + book.getAuthor() + "', "
+                    + "publishingHouse = " + "'" + book.getPublishingHouse() + "', "
+                    + "numPages = " + book.getNumPages() + " WHERE id ="+ book.getID();
+        }
+        else if(paper instanceof Magazine){
+            Magazine magazine = (Magazine) paper;
+            sqlCommand = sqlCommand+" magazine\n"
+                    +" SET "+ "name = " + "'" + magazine.getName() + "', "
+                    + "number = " + magazine.getNumber() + ", "
+                    + "numPages = " + magazine.getNumPages() + ", "
+                    + "date = " + "'" + magazine.getDate() + "' WHERE id ="+ magazine.getID();
+        }
+        else if(paper instanceof Newspaper){
+            Newspaper newspaper = (Newspaper) paper;
+            sqlCommand = sqlCommand+" newspaper\n"
+                    +" SET "+ "name = " + "'" + newspaper.getName() + "', "
+                    + "number = " + newspaper.getNumber() + ", "
+                    + "date = " + "'" + newspaper.getDate() + "' WHERE id ="+ newspaper.getID();
         }
         try {
             stmt = conn.createStatement();
@@ -218,37 +364,37 @@ public class Repository implements IRepository {
             System.out.println(ex);
         }
     }
-    public List<String> showWhatToEdit(Type type){
-        List<String> fields = new ArrayList<>();
-        Connection con;
-        Statement stmt;
-        ResultSet rs;
-        String sqlCoomand = "SELECT *FROM ";
-        try {
-            con = DriverManager.getConnection(url, username, password);
-            stmt=con.createStatement();
-
-            if(type == Type.BOOK) {
-                sqlCoomand= sqlCoomand+"book";
-            }
-            if(type == Type.MAGAZINE){
-                sqlCoomand =sqlCoomand+"magazine;";
-            }
-            if(type == Type.NEWSPAPER) {
-                sqlCoomand = sqlCoomand + "newspapper;";
-            }
-            rs = stmt.executeQuery(sqlCoomand);
-            ResultSetMetaData md = rs.getMetaData();
-            int counter = md.getColumnCount();
-            String colName[] = new String[counter];
-            for (int loop = 2; loop <= counter-1; loop++) {
-                colName[loop-1] = md.getColumnLabel(loop);
-                //System.out.println(colName[loop-1]);
-                fields.add(colName[loop-1]);
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        return fields;
-    }
+//    public List<String> showWhatToEdit(Type type){
+//        List<String> fields = new ArrayList<>();
+//        Connection con;
+//        Statement stmt;
+//        ResultSet rs;
+//        String sqlCoomand = "SELECT *FROM ";
+//        try {
+//            con = DriverManager.getConnection(url, username, password);
+//            stmt=con.createStatement();
+//
+//            if(type == Type.BOOK) {
+//                sqlCoomand= sqlCoomand+"book";
+//            }
+//            if(type == Type.MAGAZINE){
+//                sqlCoomand =sqlCoomand+"magazine;";
+//            }
+//            if(type == Type.NEWSPAPER) {
+//                sqlCoomand = sqlCoomand + "newspaper;";
+//            }
+//            rs = stmt.executeQuery(sqlCoomand);
+//            ResultSetMetaData md = rs.getMetaData();
+//            int counter = md.getColumnCount();
+//            String colName[] = new String[counter];
+//            for (int loop = 2; loop <= counter-1; loop++) {
+//                colName[loop-1] = md.getColumnLabel(loop);
+//                //System.out.println(colName[loop-1]);
+//                fields.add(colName[loop-1]);
+//            }
+//        } catch(Exception e) {
+//            e.printStackTrace();
+//        }
+//        return fields;
+//    }
 }

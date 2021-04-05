@@ -6,17 +6,19 @@
     <link th:href="@{/resources/css/style.css}" rel="stylesheet" />
 </head>
 <body>
-<h2>Products</h2>
-<p><a href="/ru_vsu_cs_artemyeva_war_exploded/products/books">Books</a>
-<a href="/ru_vsu_cs_artemyeva_war_exploded/products/magazines">Magazines</a>
-<a href="/ru_vsu_cs_artemyeva_war_exploded/products/newspapers">Newspapers</a></p>
+<h2>Magazines</h2>
+<p><a href="/ru_vsu_cs_artemyeva_war_exploded/products">Index</a></p>
 <table border="1">
     <tr>
         <th>Products</th>
+        <th>Number</th>
+        <th>Date</th>
     </tr>
-<div th:each="paper: ${products}">
+<div th:each="paper: ${magazines}">
     <tr>
         <td><a th:href="@{/products/{id}(id=${paper.getID()})}" th:text="${paper.getName()}"></a></td>
+        <td><p th:text="${paper.getNumber()}"></p></td>
+        <td><p th:text="${paper.getDate()}"></p></td>
     </tr>
 </div>
 </table>

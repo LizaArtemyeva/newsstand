@@ -1,18 +1,48 @@
 package ru.vsu.cs.Domain;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import javax.persistence.*;
 
 import static ru.vsu.cs.Domain.Status.IN_STOCK;
 import static ru.vsu.cs.Domain.Type.BOOK;
+
+@Entity
+@Table(name = "book")
 public class Book extends Paper {
-    private String author, publishingHouse;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "author")
+    private String author;
+
+    @Column(name = "publishingHouse")
+    private String publishingHouse;
+
+    @Column(name = "numPages")
     private int numPages;
+
     public Book(String name, String author, String publishingHouse, int numPages) {
         super(name,IN_STOCK);
         this.author = author;
         this.publishingHouse = publishingHouse;
         this.numPages = numPages;
+    }
+
+    public Book(String name, Status status) {
+        super(name, status);
+    }
+
+    public Book() {
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAuthor() {
@@ -41,7 +71,7 @@ public class Book extends Paper {
 
     @Override
     public String toString() {
-        return "Книга: " + ID + " " + name + " "+ author + " " + publishingHouse + " " + numPages;
+        return "Книга: " + id + " " + name + " "+ author + " " + publishingHouse + " " + numPages;
     }
 
     @Override
