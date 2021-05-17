@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New magazine</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/magazines}" th:object="${magazine}">
+    <label for="name">Name: </label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <br/>
+    <label for="number">Number: </label>
+    <input type="text" th:field="*{number}" id="number"/>
+    <br/>
+    <label for="date">Date: </label>
+    <input type="text" th:field="*{date}" id="date"/>
+    <br/>
+    <label for="numPages">Number of pages: </label>
+    <input type="text" th:field="*{numPages}" id="numPages"/>
+    <br/>
+    <input type="submit" value="Create"/>
+</form>
+</body>
+</html>

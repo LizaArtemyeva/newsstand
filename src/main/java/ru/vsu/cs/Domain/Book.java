@@ -9,9 +9,6 @@ import static ru.vsu.cs.Domain.Type.BOOK;
 @Table(name = "book")
 public class Book extends Paper {
 
-    @Column(name = "name")
-    private String name;
-
     @Column(name = "author")
     private String author;
 
@@ -33,16 +30,6 @@ public class Book extends Paper {
     }
 
     public Book() {
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getAuthor() {

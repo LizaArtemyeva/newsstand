@@ -49,3 +49,11 @@ p {
     border: 1px solid #ccc;
     border-top: none;
 }
+.btn {
+    display: inline-block; /* Строчно-блочный элемент */
+    background: #FF69B4; /* Серый цвет фона */
+    color: #fff; /* Белый цвет текста */
+    padding: 1rem 1.5rem; /* Поля вокруг текста */
+    text-decoration: none; /* Убираем подчёркивание */
+    border-radius: 3px; /* Скругляем уголки */
+}

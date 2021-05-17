@@ -37,9 +37,10 @@ public class Manager {
         return iRepository.getAllProducts();
     }
     @Transactional
-    public void addNewProduct(){
-        Paper paper = consoleUI.addNewProduct();
-        paper.setID(iRepository.addProduct(paper));
+    public void addNewProduct(Paper product){
+        //Paper paper = consoleUI.addNewProduct();
+        //paper.setID(iRepository.addProduct(paper));
+        iRepository.addProduct(product);
     }
     @Transactional
     public Paper getPaper(int id){

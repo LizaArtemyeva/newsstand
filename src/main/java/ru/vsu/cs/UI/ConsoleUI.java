@@ -48,6 +48,7 @@ public class ConsoleUI {
 
         return id;
     }
+    //Type.values() чтобы вывести все возможные значения
     public Type getType(){
         System.out.println("C каким продуктом будем работать? (book/ magazine/ newspaper) -");
         Type type;
@@ -66,12 +67,12 @@ public class ConsoleUI {
         }
         return null;
     }
-    public void showProducts(List<Paper> products){
+    public void showProducts(final List<Paper> products){
         for(int i = 0; i < products.size(); i++){
            System.out.println(products.get(i));
         }
     }
-    public void whatToEditMessage(Type type){
+    public void whatToEditMessage(final Type type){
         System.out.println("Вы можете поменять следующие поля:");
         if(type.equals(Type.BOOK)){
             try {

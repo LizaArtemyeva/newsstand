@@ -4,21 +4,75 @@
     <meta charset="UTF-8">
     <title>Index</title>
     <link th:href="@{/resources/css/style.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/resources/js/script.js}"></script>
 </head>
 <body>
 <h2>Products</h2>
-<p><a href="/ru_vsu_cs_artemyeva_war_exploded/products/books">Books</a>
-<a href="/ru_vsu_cs_artemyeva_war_exploded/products/magazines">Magazines</a>
-<a href="/ru_vsu_cs_artemyeva_war_exploded/products/newspapers">Newspapers</a></p>
-<table border="1">
-    <tr>
-        <th>Products</th>
-    </tr>
-<div th:each="paper: ${products}">
-    <tr>
-        <td><a th:href="@{/products/{id}(id=${paper.getID()})}" th:text="${paper.getName()}"></a></td>
-    </tr>
+<div class="tab">
+    <button class="tablinks" onclick="openProduct(event, 'books')" id="defaultOpen" >Books</button>
+    <button class="tablinks" onclick="openProduct(event, 'magazines')">Magazines</button>
+    <button class="tablinks" onclick="openProduct(event, 'newspapers')">Newspapers</button>
 </div>
-</table>
+<!-- Tab content -->
+<div id="books" class="tabcontent">
+    <h3>Books</h3>
+    <table border="1">
+        <tr>
+            <th>Products</th>
+            <th>Publishing House</th>
+            <th>Author</th>
+        </tr>
+        <div th:each="paper: ${books}">
+            <tr>
+                <td><a th:href="@{/products/{id}(id=${paper.getID()})}" th:text="${paper.getName()}"></a></td>
+                <td><p th:text="${paper.getPublishingHouse()}"></p></td>
+                <td><p th:text="${paper.getAuthor()}"></p></td>
+            </tr>
+        </div>
+    </table>
+    <a th:href="@{/books/new}" class="btn">Create</a>
+</div>
+
+<div id="magazines" class="tabcontent">
+    <h3>Magazines</h3>
+    <table border="1">
+        <tr>
+            <th>Products</th>
+            <th>Number</th>
+            <th>Date</th>
+        </tr>
+        <div th:each="paper: ${magazines}">
+            <tr>
+                <td><a th:href="@{/products/{id}(id=${paper.getID()})}" th:text="${paper.getName()}"></a></td>
+                <td><p th:text="${paper.getNumber()}"></p></td>
+                <td><p th:text="${paper.getDate()}"></p></td>
+            </tr>
+        </div>
+    </table>
+    <a th:href="@{/magazines/new}" class="btn">Create</a>
+</div>
+
+<div id="newspapers" class="tabcontent">
+    <h3>Newspapers</h3>
+    <table border="1">
+        <tr>
+            <th>Products</th>
+            <th>Number</th>
+            <th>Date</th>
+        </tr>
+        <div th:each="paper: ${newspapers}">
+            <tr>
+                <td><a th:href="@{/products/{id}(id=${paper.getID()})}" th:text="${paper.getName()}"></a></td>
+                <td><p th:text="${paper.getNumber()}"></p></td>
+                <td><p th:text="${paper.getDate()}"></p></td>
+            </tr>
+        </div>
+    </table>
+    <a th:href="@{/newspapers/new}" class="btn">Create</a>
+</div>
+
+<script>
+    document.getElementById("defaultOpen").click();
+</script>
 </body>
 </html>

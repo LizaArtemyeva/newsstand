@@ -147,7 +147,7 @@ public class Repository implements IRepository {
     }
         return products;
     }
-    public Paper getPaper(int id){
+    public Paper getPaper(final int id){
         List<Paper> papers = getAllProducts();
         return papers.stream().filter(paper -> paper.getID()==id).findAny().orElse(null);
     }
@@ -165,7 +165,7 @@ public class Repository implements IRepository {
         }
         throw new IllegalArgumentException("No last id inserted");
     }
-    public int addProduct(Paper product) {
+    public int addProduct(final Paper product) {
         String sqlCommand="INSERT into";
         if (product instanceof Book){
             sqlCommand = sqlCommand+ " book (name, author, publishingHouse,numPages,status)\n" +
@@ -236,7 +236,7 @@ public class Repository implements IRepository {
 //            System.out.println(ex);
 //        }
 //    }
-    public void removeFromBD(Paper paper){
+    public void removeFromBD(final Paper paper){
         String sqlCommand="DELETE FROM";
         if(paper.getType() == Type.BOOK){
             sqlCommand = sqlCommand+" book" + " WHERE id = " + paper.getID();
@@ -281,7 +281,7 @@ public class Repository implements IRepository {
 //        }
 //
 //    }
-    public void pickUpProductBD(Paper paper){
+    public void pickUpProductBD(final Paper paper){
         String sqlCommand="UPDATE ";
         if(paper.getType() == Type.BOOK){
             sqlCommand = sqlCommand+" book "
@@ -330,7 +330,7 @@ public class Repository implements IRepository {
             System.out.println(ex);
         }
     }*/
-    public void editProductBD(Paper paper){
+    public void editProductBD(final Paper paper){
         String sqlCommand="UPDATE ";
         if(paper instanceof Book){
             Book book =(Book) paper;
