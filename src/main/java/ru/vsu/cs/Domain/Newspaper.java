@@ -1,15 +1,18 @@
 package ru.vsu.cs.Domain;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import java.io.Serializable;
 
 import static ru.vsu.cs.Domain.Status.IN_STOCK;
 import static ru.vsu.cs.Domain.Type.NEWSPAPER;
 
 @Entity
-@Table(name = "newspaper")
-public class Newspaper extends Paper {
+@DiscriminatorValue("newspaper")
+public class Newspaper extends Paper implements Serializable {
     @Column(name = "number")
     private int number;
     @Column(name = "date")
@@ -51,5 +54,17 @@ public class Newspaper extends Paper {
     @Override
     public Type getType() {
         return NEWSPAPER;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Newspaper){
+            Newspaper newspaper = ((Newspaper) obj);
+            return newspaper.getName().equals(getName()) &&
+                    newspaper.getNumber() == getNumber() &&
+                    newspaper.getDate().equals(getDate());
+        }else {
+            return false;
+        }
     }
 }

@@ -2,6 +2,7 @@ package ru.vsu.cs.DAO;
 
 import ru.vsu.cs.Domain.*;
 
+import javax.transaction.NotSupportedException;
 import java.util.List;
 
 public interface IRepository {

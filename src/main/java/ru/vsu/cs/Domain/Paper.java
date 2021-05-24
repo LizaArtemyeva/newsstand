@@ -1,9 +1,13 @@
 package ru.vsu.cs.Domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-@MappedSuperclass
-public abstract class Paper{
+@Entity
+@Table(name = "paper")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type")
+public abstract class Paper implements Serializable{
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

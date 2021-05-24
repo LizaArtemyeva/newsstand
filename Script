@@ -24,3 +24,19 @@ CREATE TABLE IF NOT EXISTS `newsstand`.`book` (
 `status` INT NOT NULL,
 PRIMARY KEY (`idbook`))
 "ENGINE = InnoDB;
+
+DROP TABLE newsstand.paper;
+
+CREATE TABLE paper(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    type VARCHAR(500),
+    name VARCHAR(500),
+    status INT,
+    author VARCHAR(500),
+    publishingHouse VARCHAR(500),
+    numPages INTEGER,
+    number VARCHAR(500),
+    date VARCHAR(500)
+);
+
+truncate newsstand.paper;

@@ -2,12 +2,14 @@ package ru.vsu.cs.Domain;
 
 import javax.persistence.*;
 
+import java.io.Serializable;
+
 import static ru.vsu.cs.Domain.Status.IN_STOCK;
 import static ru.vsu.cs.Domain.Type.BOOK;
 
 @Entity
-@Table(name = "book")
-public class Book extends Paper {
+@DiscriminatorValue("book")
+public class Book extends Paper implements Serializable {
 
     @Column(name = "author")
     private String author;
@@ -64,5 +66,18 @@ public class Book extends Paper {
     @Override
     public Type getType() {
         return BOOK;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Book){
+            Book book = ((Book) obj);
+            return book.getName().equals(getName()) &&
+                    book.getPublishingHouse().equals(getPublishingHouse()) &&
+                    book.getAuthor().equals(getAuthor()) &&
+                    book.getNumPages() == getNumPages();
+        }else {
+            return false;
+        }
     }
 }

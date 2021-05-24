@@ -10,6 +10,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.*;
+import javax.transaction.NotSupportedException;
+
 @PropertySource("classpath:database.properties")
 @Component("repository")
 public class Repository implements IRepository {
@@ -147,6 +149,12 @@ public class Repository implements IRepository {
     }
         return products;
     }
+
+    public List<Book> getAllBooks() throws NotSupportedException {
+        // TODO: 18.05.2021
+        throw new NotSupportedException("");
+    }
+
     public Paper getPaper(final int id){
         List<Paper> papers = getAllProducts();
         return papers.stream().filter(paper -> paper.getID()==id).findAny().orElse(null);

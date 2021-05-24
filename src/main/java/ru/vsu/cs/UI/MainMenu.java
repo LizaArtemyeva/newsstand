@@ -29,19 +29,19 @@
 //            int commandCode = scanner.nextInt();
 //            switch (commandCode) {
 //                case 1:
-//                    manager.showProducts();
+//                    manager.getAllProducts();
 //                    break;
 //                case 2:
-//                    manager.addNewProduct();
+//                    //.addNewProduct();
 //                    break;
 //                case 3:
 //                    manager.buyProduct();
 //                    break;
 //                case 4:
-//                    manager.editProduct();
+//                    //manager.editProduct();
 //                    break;
 //                case 5:
-//                    manager.removeProduct();
+//                    //manager.removeProduct();
 //                    break;
 //                case 0:
 //                    return;

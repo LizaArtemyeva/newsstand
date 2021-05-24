@@ -39,13 +39,18 @@ public class HibernateRepository implements IRepository{
         return session.createQuery("from Newspaper", Newspaper.class).list();
     }
 
+//    @Override
+//    public List<Paper> getAllProducts() {
+//        List<Paper> products = new ArrayList<>();
+//        products.addAll(getBooks());
+//        products.addAll(getMagazines());
+//        products.addAll(getNewspapers());
+//        return products;
+//    }
     @Override
     public List<Paper> getAllProducts() {
-        List<Paper> products = new ArrayList<>();
-        products.addAll(getBooks());
-        products.addAll(getMagazines());
-        products.addAll(getNewspapers());
-        return products;
+        Session session = getSession();
+        return session.createQuery("from Paper", Paper.class).list();
     }
 
     @Override
@@ -71,7 +76,9 @@ public class HibernateRepository implements IRepository{
     @Override
     public void removeFromBD(Paper paper) {
         Session session = getSession();
+        //Paper paper = session.load(Paper.class, id);
         session.delete(paper);
+        //session.flush();
     }
 
     @Override
